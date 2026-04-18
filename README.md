@@ -89,16 +89,6 @@ traffic-flow-simulation/
 
 ---
 
-## 🔧 Possible Improvements
-
-* Add turning cars and multiple lanes
-* Implement collision detection
-* Add user controls for traffic density
-* Include sound effects
-* Expand to a full intersection system
-
----
-
 ## 👤 Author
 
 **Michael Nsengiyumva**
