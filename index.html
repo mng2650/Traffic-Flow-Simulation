@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Traffic Flow Simulation</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:Segoe UI, Arial, sans-serif;
+background:linear-gradient(#87ceeb,#e4f3ff);
+display:flex;
+flex-direction:column;
+align-items:center;
+min-height:100vh;
+text-align:center;
+}
+
+h1{
+margin-top:20px;
+color:#222;
+}
+
+#canvas{
+width:90vw;
+max-width:900px;
+height:auto;
+aspect-ratio:7/5;
+background:linear-gradient(#6b6b6b,#2f2f2f);
+border:6px solid #111;
+border-radius:12px;
+box-shadow:0 15px 40px rgba(0,0,0,0.4);
+margin-top:20px;
+}
+
+.controls{
+margin-top:10px;
+}
+
+button{
+padding:14px 26px;
+margin:10px;
+font-size:18px;
+border:none;
+border-radius:10px;
+background:#1e90ff;
+color:white;
+cursor:pointer;
+box-shadow:0 5px 10px rgba(0,0,0,0.3);
+transition:0.2s;
+}
+
+button:hover{
+transform:scale(1.05);
+background:#187bdb;
+}
+
+footer{
+margin-top:auto;
+width:100%;
+padding:20px;
+background:#111;
+color:white;
+font-size:14px;
+}
+
+@media (max-width:600px){
+
+h1{
+font-size:22px;
+}
+
+button{
+font-size:16px;
+padding:12px 20px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Traffic Flow Simulation 🚦</h1>
+
+<canvas id="canvas" width="700" height="500"></canvas>
+
+<div class="controls">
+<button onclick="startSim()">Start</button>
+<button onclick="pauseSim()">Pause</button>
+</div>
+
+<script>
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+let running = false;
+let cars = [];
+
+let lightState = "green";
+let lightTimer = 0;
+
+class Car{
+
+constructor(x,y,speed,color){
+this.x = x;
+this.y = y;
+this.speed = speed;
+this.width = 35;
+this.height = 18;
+this.color = color;
+}
+
+move(){
+
+if(lightState === "red" && this.x > 280 && this.x < 330){
+return;
+}
+
+this.x += this.speed;
+
+if(this.x > canvas.width){
+this.x = -60;
+}
+
+}
+
+draw(){
+
+ctx.fillStyle = "rgba(0,0,0,0.3)";
+ctx.fillRect(this.x+3,this.y+3,this.width,this.height);
+
+ctx.fillStyle = this.color;
+ctx.fillRect(this.x,this.y,this.width,this.height);
+
+ctx.fillStyle = "rgba(255,255,255,0.3)";
+ctx.fillRect(this.x+8,this.y-6,20,8);
+
+ctx.fillStyle = "black";
+ctx.fillRect(this.x+5,this.y+this.height,6,4);
+ctx.fillRect(this.x+24,this.y+this.height,6,4);
+
+}
+
+}
+
+function spawnCars(){
+
+cars.push(new Car(-100,240,2,"red"));
+cars.push(new Car(-300,260,2.5,"blue"));
+cars.push(new Car(-500,240,1.8,"lime"));
+cars.push(new Car(-700,260,2.2,"yellow"));
+
+}
+
+function drawRoad(){
+
+ctx.fillStyle="#3b3b3b";
+ctx.fillRect(0,200,700,120);
+
+ctx.fillRect(300,0,120,500);
+
+ctx.strokeStyle="white";
+ctx.lineWidth=3;
+ctx.setLineDash([20,15]);
+
+ctx.beginPath();
+ctx.moveTo(0,260);
+ctx.lineTo(700,260);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(360,0);
+ctx.lineTo(360,500);
+ctx.stroke();
+
+ctx.setLineDash([]);
+
+}
+
+function drawTrafficLight(){
+
+ctx.fillStyle="#222";
+ctx.fillRect(345,120,10,60);
+
+ctx.fillStyle="#111";
+ctx.fillRect(330,140,40,90);
+
+ctx.shadowBlur = 20;
+
+if(lightState==="green"){
+ctx.fillStyle="lime";
+ctx.shadowColor="lime";
+}
+
+if(lightState==="yellow"){
+ctx.fillStyle="yellow";
+ctx.shadowColor="yellow";
+}
+
+if(lightState==="red"){
+ctx.fillStyle="red";
+ctx.shadowColor="red";
+}
+
+ctx.beginPath();
+ctx.arc(350,180,12,0,Math.PI*2);
+ctx.fill();
+
+ctx.shadowBlur = 0;
+
+}
+
+function updateLights(){
+
+lightTimer++;
+
+if(lightTimer > 300){
+
+if(lightState==="green"){
+lightState="yellow";
+}
+
+else if(lightState==="yellow"){
+lightState="red";
+}
+
+else{
+lightState="green";
+}
+
+lightTimer = 0;
+
+}
+
+}
+
+function update(){
+
+if(!running) return;
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+drawRoad();
+updateLights();
+drawTrafficLight();
+
+cars.forEach(car=>{
+car.move();
+car.draw();
+});
+
+requestAnimationFrame(update);
+
+}
+
+function startSim(){
+if(!running){
+running = true;
+update();
+}
+}
+
+function pauseSim(){
+running = false;
+}
+
+spawnCars();
+drawRoad();
+drawTrafficLight();
+
+</script>
+
+<footer>
+<p>© 2026 Michael Nsengiyumva | All Rights Reserved</p>
+</footer>
+
+</body>
+</html>
