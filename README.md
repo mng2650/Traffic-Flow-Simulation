@@ -7,7 +7,8 @@ A simple and visually appealing traffic flow simulation built using **HTML5 Canv
 
 ## 📸 Preview
 
-https://traffic-flow-simulator-mn.netlify.app/
+https://traffic-flow-simulator-mn.org/
+
 
 ---
 
