@@ -5,7 +5,7 @@ A simple and visually appealing traffic flow simulation built using **HTML5 Canv
 
 ---
 
-## 📸 Preview
+## Link
 
 https://traffic-flow-simulator-mn.org/
 
@@ -33,17 +33,12 @@ https://traffic-flow-simulator-mn.org/
 
 ## 🚀 Getting Started
 
-### 1. Clone the repository
+### Clone the repository
 
 ```bash
 git clone https://github.com/your-username/traffic-flow-simulation.git
 ```
 
-### 2. Open the project
-
-Simply open the `index.html` file in your browser.
-
----
 
 ## 🎮 How to Use
 
@@ -84,7 +79,6 @@ Simply open the `index.html` file in your browser.
 ```
 traffic-flow-simulation/
 │── index.html   # Main file (HTML, CSS, JS combined)
-│── preview.png  # Screenshot (optional)
 ```
 
 ---
